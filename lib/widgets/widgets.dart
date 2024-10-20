@@ -11,7 +11,7 @@ class RatingBox extends StatefulWidget {
 }
 
 class _RatingBoxState extends State<RatingBox> {
-  double size = 20;
+  double size = 16;
 
   @override
   Widget build(BuildContext context) {
