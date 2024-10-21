@@ -67,9 +67,12 @@ class MyHomePage extends StatelessWidget {
   static const platform = MethodChannel('flutterapp.tutorialspoint.com/browser');
   Future<void> _openBrowser() async {
     try {
-      final int result = await platform.invokeMethod('openBrowser', <String, String>{
-        'url': "https://flutter.dev"
+      final String result = await platform.invokeMethod('openBrowser', <String, String>{
+        'url': 'https://flutter.dev',
       });
+      if (kDebugMode) {
+        print("Browser opened: '$result'.");
+      }
     }
     on PlatformException catch (e) {
       if (kDebugMode) {
