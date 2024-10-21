@@ -1,27 +1,29 @@
+package com.example.first_flutter  // Đảm bảo rằng package name là đúng
+
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import io.flutter.embedding.android.FlutterActivity
-import io.flutter.plugin.common.MethodCall
+import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 
 class MainActivity : FlutterActivity() {
     private val CHANNEL = "flutterapp.tutorialspoint.com/browser"
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
+        super.configureFlutterEngine(flutterEngine)
 
-        MethodChannel(flutterEngine?.dartExecutor?.binaryMessenger, CHANNEL).setMethodCallHandler { call, result ->
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL).setMethodCallHandler { call, result ->
             when (call.method) {
                 "openBrowser" -> {
                     val url: String? = call.argument("url")
-                    url?.let {
-                        openBrowser(result, it)
-                    } ?: result.error("INVALID_URL", "URL cannot be null", null)
+                    if (url != null) {
+                        openBrowser(result, url)
+                    } else {
+                        result.error("INVALID_URL", "URL cannot be null", null)
+                    }
                 }
-                else -> {
-                    result.notImplemented()
-                }
+                else -> result.notImplemented()
             }
         }
     }
